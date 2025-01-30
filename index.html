@@ -3,84 +3,115 @@
 <head>
 <title>Website Launch Timer</title>
 <style>
-body {
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0;
-  /* Initially, show a solid background or image */
-  background-color: #4a0a8a; /* Or use background-image */
-  overflow: hidden; /* Prevent scrollbars when video is added */
-}
-
-#video-background {
-  position: fixed; /* Stay in place */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Cover the entire background */
-  z-index: -1; /* Place behind other content */
-  display: none; /* Initially hidden */
-}
-
-#timer {
-  font-size: 4em;
-  margin-bottom: 20px;
-  color: white; /* Text color for timer */
-  z-index: 1; /* Ensure timer is above video */
-}
-
-#celebration {
-  display: none;
-  text-align: center;
-  color: white; /* Text color for celebration message */
-  z-index: 1; /* Ensure celebration message is above video */
-}
-
-#celebration h1 {
-  color: #333;
-}
-
-</style>
+  body {
+    font-family: 'Orbitron', sans-serif; /* Modern font */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #00674F;
+    overflow: hidden;
+    color: #fff; /* White text */
+  }
+  
+  #video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    display: none;
+  }
+  
+  #timer {
+    font-size: 4em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5); /* Glow effect */
+  }
+  
+  .time-segment {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Subtle shadow */
+    align-items: center;
+  }
+  
+  .time-label {
+    font-size: 0.5em; /* Smaller labels */
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+  }
+  
+  #celebration {
+    display: none;
+    text-align: center;
+    color: white;
+    z-index: 1;
+    font-size: medium;
+  }
+  #celebration h1 {
+    color: #00674F;
+    font-weight: bolder;
+    font-size: xxx-large;
+  }
+  
+  /* Add some basic animations */
+  @keyframes glow {
+    0% {
+      text-shadow: 0 0 5px rgba(255,255,255,0.2);
+    }
+    50% {
+      text-shadow: 0 0 15px rgba(255,255,255,0.7);
+    }
+    100% {
+      text-shadow: 0 0 5px rgba(255,255,255,0.2);
+    }
+  }
+  
+  #timer {
+    animation: glow 2s infinite; /* Apply glow animation */
+  }
+  
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<video autoplay muted loop id="video-background">
-  <source src="assets/main.mp4" type="video/mp4" />
-</video>
-
-<div id="timer"></div>
-<div id="celebration">
-  <h1>We're Live!</h1>
-  <p>Welcome to our website!</p>
-</div>
-
+  <video autoplay muted loop id="video-background">
+    <source src="assets/main.mp4" type="video/mp4" />
+  </video>
+  
+  <div id="timer"></div>
+  <div id="celebration">
+    <h1>Thamizhi Automate Technology Services</h1>
+    <p>We are thrilled to announce the grand inauguration of our company!</p>
+    <p>From today onwards, our services and updates will be posted here.</p>
+  </div>
+  
 <script>
+  const timerDisplay = document.getElementById('timer');
+  const celebrationDiv = document.getElementById('celebration');
+  const videoBackground = document.getElementById('video-background');
+  const launchDate = new Date('2025-01-30 22:40:00'); // Set your launch date and time
 
   function showCelebration() {
     timerDisplay.style.display = 'none';
     celebrationDiv.style.display = 'block';
-    document.body.style.backgroundColor = 'transparent'; // Make background transparent
-    document.getElementById('video-background').style.display = 'block'; // Show video
-    // document.body.style.color = 'white'; //Or change the text color to white
+    document.body.style.backgroundColor = 'transparent';
+    videoBackground.style.display = 'block';
   }
-
-
-  const timerDisplay = document.getElementById('timer');
-  const celebrationDiv = document.getElementById('celebration');
-  const launchDate = new Date('2025-01-30 20:20:00'); // Your launch date
 
   function checkLaunchStatus() {
     const now = new Date();
-    if (launchDate.getTime() <= now.getTime()) {
-      showCelebration();
-      return true; // Return true if launched
-    }
-    return false; // Return false if not launched yet
+    return launchDate.getTime() <= now.getTime(); // Return boolean directly
   }
 
   function updateTimer() {
@@ -88,39 +119,41 @@ body {
     const timeLeft = launchDate.getTime() - now.getTime();
 
     if (timeLeft <= 0) {
-        checkLaunchStatus();
-      clearInterval(timerInterval);      
+      clearInterval(timerInterval); // Clear interval when time is up
       showCelebration();
       return;
     }
+  
 
     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-    timerDisplay.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+     timerDisplay.innerHTML = `
+      <div class="time-segment">
+        ${days}<span class="time-label">Days</span>
+      </div>
+      <div class="time-segment">
+        ${hours}<span class="time-label">Hours</span>
+      </div>
+      <div class="time-segment">
+        ${minutes}<span class="time-label">Minutes</span>
+      </div>
+      <div class="time-segment">
+        ${seconds}<span class="time-label">Seconds</span>
+      </div>
+    `;
   }
 
-  function showCelebration() {
-    timerDisplay.style.display = 'none';
-    celebrationDiv.style.display = 'block';
-    document.body.style.backgroundColor = '#00674E';
+  let timerInterval; // Declare timerInterval outside the if/else
 
-
-  }
-
-  // Check launch status on page load:
   if (checkLaunchStatus()) {
-     // If already launched, no need for timer.
-     clearInterval(timerInterval); // Clear any existing timer
+    showCelebration(); // Show celebration if launch date is already passed
   } else {
-      updateTimer(); // Initial call (only if not launched)
-      const timerInterval = setInterval(updateTimer, 1000); // Update every second (only if not launched)
+    updateTimer(); // Initial update
+    timerInterval = setInterval(updateTimer, 1000); // Then set the interval
   }
-
-
-
 </script>
 
 </body>
