@@ -41,14 +41,16 @@ body {
   z-index: 1; /* Ensure celebration message is above video */
 }
 
-/* ... other styles ... */
+#celebration h1 {
+  color: #333;
+}
 
 </style>
 </head>
 <body>
 
-<video id="video-background" autoplay muted loop>
-  <source src="main.mp4" type="video/mp4">  Your browser does not support the video tag.
+<video autoplay muted loop id="video-background">
+  <source src="assets/main.mp4" type="video/mp4" />
 </video>
 
 <div id="timer"></div>
@@ -58,7 +60,6 @@ body {
 </div>
 
 <script>
-// ... (other JavaScript code: checkLaunchStatus, updateTimer) ...
 
   function showCelebration() {
     timerDisplay.style.display = 'none';
@@ -71,7 +72,7 @@ body {
 
   const timerDisplay = document.getElementById('timer');
   const celebrationDiv = document.getElementById('celebration');
-  const launchDate = new Date('2025-01-30 18:26:00'); // Your launch date
+  const launchDate = new Date('2025-01-30 20:19:00'); // Your launch date
 
   function checkLaunchStatus() {
     const now = new Date();
